@@ -142,11 +142,15 @@ resource "google_compute_instance_template" "vm_template" {
 }
 
 resource "google_compute_region_instance_group_manager" "mig" {
-  name               = "vm-mig"
+  name               = "vm-mig-private"
   project            = var.project_id
   region             = var.region
   base_instance_name = "vm"
   target_size        = 1
+
+  /* 権限の付与完了を待ってから VM を起動させる */
+  depends_on = [google_service_account_iam_member.deployer_sa_user]
+
   version {
     instance_template = google_compute_instance_template.vm_template.id
   }
@@ -156,11 +160,8 @@ resource "google_compute_region_instance_group_manager" "mig" {
     port = 80
   }
 
-  update_policy {
-    type                  = "PROACTIVE"
-    minimal_action        = "REPLACE"
-    max_surge_fixed       = 3
-    max_unavailable_fixed = 0
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
