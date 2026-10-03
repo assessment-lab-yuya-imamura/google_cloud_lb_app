@@ -1,0 +1,32 @@
+name: "IaC Security Scan"
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+  push:
+    branches: [ "main" ]
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+
+jobs:
+  trivy-scan:
+    name: "Trivy IaC Scan"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner in IaC mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'          # Terraform などの設定ファイルをスキャン
+          scan-ref: '.'                # 対象ディレクトリ（ルート）
+          severity: 'CRITICAL,HIGH'   # 検出する重大度（必要に応じて MEDIUM も追加）
+          exit-code: '0'               # 脆弱性/設定不備が見つかったらジョブをそのまま続行
+          hide-progress: true
+          format: 'table'
