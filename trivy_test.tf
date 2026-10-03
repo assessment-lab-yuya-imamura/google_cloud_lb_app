@@ -35,6 +35,6 @@ resource "google_service_account" "test_sa" {
 
 resource "google_project_iam_member" "test_sa_full_privileges" {
   project = "dummy-project"
-  role    = "roles/owner" # ⚠️ プロジェクト全体の全権限を付与（CRITICAL）
+  role    = "roles/owner" # ⚠️ 全ての権限を付与
   member  = "serviceAccount:${google_service_account.test_sa.email}"
 }
