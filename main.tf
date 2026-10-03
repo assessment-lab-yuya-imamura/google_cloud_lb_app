@@ -23,7 +23,7 @@ provider "google" {
 
 resource "google_service_account" "vm_sa"{
     account_id = "tf-lb-sa"
-    display_name = "Service account for load balancer demo"
+    display_name = "Service account for load balancer demos"
 }
 
 resource "google_project_iam_member" "project" {
