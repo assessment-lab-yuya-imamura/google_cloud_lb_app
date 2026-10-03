@@ -81,7 +81,7 @@ resource "google_compute_instance_template" "vm_template" {
         #!/bin/bash
         apt-get update
         apt-get install -y apache2
-        echo "<h1>Hello, World!</h1>" > /var/www/html/index.html
+        echo "<h1>Hello, World222</h1>" > /var/www/html/index.html
     EOF
   }
 
