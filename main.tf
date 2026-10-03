@@ -1,7 +1,7 @@
 variable "gcp_credentials" {
     type = string
     sensitive = true
-    description = "GCP credentials in JSON format"
+    description = "GCP credential in JSON format"
 }
 
 variable "project_id"{
