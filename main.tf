@@ -93,7 +93,7 @@ resource "google_compute_router_nat" "nat" {
   region                             = google_compute_router.nat_router.region
   source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
   subnetwork {
-    name = google_compute_subnetwork.subnet_private.id
+    name                    = google_compute_subnetwork.subnet_private.id
     source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
   }
   nat_ip_allocate_option = "AUTO_ONLY"
@@ -104,7 +104,7 @@ resource "google_compute_router_nat" "nat" {
 }
 
 resource "google_compute_instance_template" "vm_template" {
-  name         = "vm-template"
+  name_prefix  = "vm-template-"
   machine_type = "e2-micro"
   project      = var.project_id
 
@@ -135,6 +135,10 @@ resource "google_compute_instance_template" "vm_template" {
   service_account {
     email  = google_service_account.vm_sa.email
     scopes = ["cloud-platform"]
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
