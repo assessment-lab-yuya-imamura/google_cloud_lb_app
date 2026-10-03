@@ -11,7 +11,7 @@ resource "google_storage_bucket" "insecure_bucket" {
 resource "google_storage_bucket_iam_member" "public_access" {
   bucket = google_storage_bucket.insecure_bucket.name
   role   = "roles/storage.objectAdmin"
-  member = "allUsers" # ⚠️ インターネット上の誰でも管理者権限（CRITICAL）
+  member = "allUsers" # ⚠️ インターネット上の誰でも管理者（CRITICAL）
 }
 
 # 2. 全ポートがインターネットにフルオープンなファイアウォール（HIGH）
