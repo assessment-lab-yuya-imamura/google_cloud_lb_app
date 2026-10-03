@@ -117,7 +117,6 @@ resource "google_compute_instance_template" "vm_template" {
   network_interface {
     network    = google_compute_network.vpc_network.id
     subnetwork = google_compute_subnetwork.subnet_private.id
-    /* access_config {} */
   }
 
   tags = ["allow-lb-traffic", "allow-ssh"]
@@ -143,12 +142,11 @@ resource "google_compute_instance_template" "vm_template" {
 }
 
 resource "google_compute_region_instance_group_manager" "mig" {
-  name               = "vm-mig"
+  name_prefix        = "vm-mig-"
   project            = var.project_id
   region             = var.region
   base_instance_name = "vm"
   target_size        = 1
-
   version {
     instance_template = google_compute_instance_template.vm_template.id
   }
@@ -156,6 +154,9 @@ resource "google_compute_region_instance_group_manager" "mig" {
   named_port {
     name = "http"
     port = 80
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -192,8 +193,7 @@ resource "google_compute_firewall" "allow_lb_to_vm" {
 
   source_ranges = [
     "130.211.0.0/22",
-    "35.191.0.0/16",
-    /* "0.0.0.0/0" */
+    "35.191.0.0/16"
   ]
   target_tags = ["allow-lb-traffic"]
 }
