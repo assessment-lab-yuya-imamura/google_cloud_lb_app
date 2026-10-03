@@ -48,6 +48,12 @@ resource "google_project_iam_member" "vm_sa_monitoring" {
   member  = google_service_account.vm_sa.member
 }
 
+resource "google_service_account_iam_member" "deployer_sa_user" {
+  service_account_id = google_service_account.vm_sa.name
+  role               = "roles/iam.serviceAccountUser"
+  member             = "serviceAccount:terraform-cloud-deployer-for-g@${var.project_id}.iam.gserviceaccount.com"
+}
+
 resource "google_compute_network" "vpc_network" {
   project                 = var.project_id
   name                    = "vpc-network"
