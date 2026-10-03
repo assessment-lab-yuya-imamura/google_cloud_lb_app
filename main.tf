@@ -39,7 +39,7 @@ resource "google_compute_network" "vpc_network" {
 }
 
 
-resource "google_compute_subnet" "subnet_public" {
+resource "google_compute_subnetwork" "subnet_public" {
   name        = "public_subnet"
   ip_cidr_range = "10.0.1.0/24"
   region      = var.region
@@ -47,7 +47,7 @@ resource "google_compute_subnet" "subnet_public" {
   project     = var.project_id
 }
 
-resource "google_compute_subnet" "subnet_private" {
+resource "google_compute_subnetwork" "subnet_private" {
   name        = "private_subnet"
   ip_cidr_range = "10.0.2.0/24"
   region      = var.region
@@ -71,7 +71,7 @@ resource "google_compute_instance_template" "vm_template" {
 
   network_interface {
     network    = google_compute_network.vpc_network.id
-    subnetwork = google_compute_subnet.subnet_public.id
+    subnetwork = google_compute_subnetwork.subnet_public.id
     access_config {}
   }
 
