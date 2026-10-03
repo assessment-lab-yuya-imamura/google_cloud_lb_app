@@ -78,7 +78,29 @@ resource "google_compute_subnetwork" "subnet_private" {
   project                  = var.project_id
   purpose                  = "PRIVATE"
   private_ip_google_access = true
+}
 
+resource "google_compute_router" "nat_router" {
+  name    = "nat-router"
+  region  = var.region
+  network = google_compute_network.vpc_network.id
+  project = var.project_id
+}
+
+resource "google_compute_router_nat" "nat" {
+  name                               = "nat"
+  router                             = google_compute_router.nat_router.name
+  region                             = google_compute_router.nat_router.region
+  source_subnetwork_ip_ranges_to_nat = "LIST_OF_SUBNETWORKS"
+  subnetwork {
+    name = google_compute_subnetwork.subnet_private.id
+    source_ip_ranges_to_nat = ["ALL_IP_RANGES"]
+  }
+  nat_ip_allocate_option = "AUTO_ONLY"
+  log_config {
+    enable = true
+    filter = "ERRORS_ONLY"
+  }
 }
 
 resource "google_compute_instance_template" "vm_template" {
@@ -94,8 +116,8 @@ resource "google_compute_instance_template" "vm_template" {
 
   network_interface {
     network    = google_compute_network.vpc_network.id
-    subnetwork = google_compute_subnetwork.subnet_public.id
-    access_config {}
+    subnetwork = google_compute_subnetwork.subnet_private.id
+    /* access_config {} */
   }
 
   tags = ["allow-lb-traffic", "allow-ssh"]
@@ -167,7 +189,7 @@ resource "google_compute_firewall" "allow_lb_to_vm" {
   source_ranges = [
     "130.211.0.0/22",
     "35.191.0.0/16",
-    "0.0.0.0/0"
+    /* "0.0.0.0/0" */
   ]
   target_tags = ["allow-lb-traffic"]
 }
