@@ -142,7 +142,7 @@ resource "google_compute_instance_template" "vm_template" {
 }
 
 resource "google_compute_region_instance_group_manager" "mig" {
-  name_prefix        = "vm-mig-"
+  name               = "vm-mig"
   project            = var.project_id
   region             = var.region
   base_instance_name = "vm"
@@ -155,8 +155,12 @@ resource "google_compute_region_instance_group_manager" "mig" {
     name = "http"
     port = 80
   }
-  lifecycle {
-    create_before_destroy = true
+
+  update_policy {
+    type                  = "PROACTIVE"
+    minimal_action        = "REPLACE"
+    max_surge_fixed       = 3
+    max_unavailable_fixed = 0
   }
 }
 
