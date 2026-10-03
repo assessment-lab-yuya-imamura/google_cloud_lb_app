@@ -25,10 +25,11 @@ resource "google_service_account" "vm_sa"{
     account_id = "tf-lb-sa"
     display_name = "Service account for load balancer demo"
 }
+
 resource "google_project_iam_member" "project" {
   project = var.project_id
   role    = "roles/logging.logWriter"
-  member  = google_service_account.vm_sa.email
+  member  = google_service_account.vm_sa.member
 }
 
 resource "google_compute_network" "vpc_network" {
