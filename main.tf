@@ -65,7 +65,7 @@ resource "google_compute_instance_template" "vm_template" {
   project      = var.project_id
 
   disk {
-    source_image = "debian-cloud/debian-11"
+    source_image = "debian-cloud/debian-12"
     auto_delete  = true
     boot         = true
   }
