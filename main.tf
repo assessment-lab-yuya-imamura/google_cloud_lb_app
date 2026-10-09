@@ -28,7 +28,7 @@ provider "google" {
 
 # -----------------------------------------------------------------------------
 # Least Privilege Service Account for VM
-# (roles/editor や roles/owner を使わず最小限の権限のみ付与)
+# (roles/editor や roles/owner 使わず最小限の権限のみ付与)
 # -----------------------------------------------------------------------------
 resource "google_service_account" "vm_sa" {
   project      = var.project_id
