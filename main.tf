@@ -16,7 +16,7 @@ variable "region" {
 
 variable "trusted_ssh_source_ranges" {
   type        = list(string)
-  description = "List of trusted IP CIDR ranges allowed to SSH into instances (e.g., your public IP or Google Cloud IAP '35.235.240.0/20')"
+  description = "List of trusted IP CIDR ranges allowed to SSH into instances ( public IP or Google Cloud IAP '35.235.240.0/20')"
   default     = ["35.235.240.0/20"]
 }
 
