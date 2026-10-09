@@ -27,7 +27,7 @@ provider "google" {
 }
 
 # -----------------------------------------------------------------------------
-# Bonus: Least Privilege Service Account for VM
+# Least Privilege Service Account for VM
 # (roles/editor や roles/owner を使わず最小限の権限のみ付与)
 # -----------------------------------------------------------------------------
 resource "google_service_account" "vm_sa" {

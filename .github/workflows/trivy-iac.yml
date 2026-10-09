@@ -26,6 +26,8 @@ jobs:
         with:
           scan-type: 'config'          # Terraform などの設定ファイルをスキャン
           scan-ref: '.'                # 対象ディレクトリ（ルート）
+          severity: 'CRITICAL,HIGH, MEDIUM'   # 検出する重大度（必要に応じて MEDIUM も追加）
+          exit-code: '1'               # 脆弱性/設定不備が見つかったらジョブをそのまま続行
           severity: 'CRITICAL,HIGH,MEDIUM,LOW'   # 検出する重大度（必要に応じて MEDIUM も追加）
           exit-code: '0'               # 脆弱性/設定不備が見つかったらジョブをそのまま続行
           hide-progress: true
